@@ -1,0 +1,25 @@
+- name: Configure Nginx
+  hosts: webserver
+  become: yes
+  tasks:
+  - name: Install nginx
+    dnf:
+      name: nginx
+      state: latest
+  - name: Start nginx service
+    service:
+      name: nginx
+      state: started
+  - name: Enable nginx service
+    service:
+      name: nginx
+      enabled: yes
+  - name: Copy index.html
+    template:
+      src: templates/index.html.j2
+      dest: /usr/share/nginx/html/index.html
+      mode: '0644'
+  - name: Restart nginx
+    service:
+      name: nginx
+      state: restarted
